@@ -1,32 +1,42 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
-  </div>
+  <v-app>
+    <TopNav />
+
+    <v-content>
+      <router-view />
+    </v-content>
+
+    <v-snackbar
+      v-model="snackbar.show"
+      :multi-line="true"
+      :right="true"
+      :top="true"
+      :timeout="6000"
+      :color="snackbar.variant"
+    >
+      {{ snackbar.message }}
+      <v-btn dark text @click="updateSnackbar({ show: false })">Close</v-btn>
+    </v-snackbar>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import { mapState, mapMutations } from "vuex";
+import TopNav from "@/components/TopNav.vue";
 
-#nav {
-  padding: 30px;
-}
+export default {
+  name: "App",
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+  components: {
+    TopNav,
+  },
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+  computed: {
+    ...mapState(["snackbar"]),
+  },
+
+  methods: {
+    ...mapMutations(["updateSnackbar"]),
+  },
+};
+</script>
